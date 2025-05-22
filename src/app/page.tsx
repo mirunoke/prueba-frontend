@@ -36,13 +36,13 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-5 md:mt-6"> 
-          <Link href="/create-vehicle">
+          <Link href="vehicles/add-vehicle">
             <Button size="sm" color="primary" variant="ghost" className="w-full sm:w-auto font-md">
               Ingresar nuevo vehículo
             </Button>
           </Link>
 
-          <Link href="/list-vehicles">
+          <Link href="/vehicles/list-vehicles">
             <Button size="sm" color="primary" variant="ghost" className="w-full sm:w-auto font-md">
               Ver vehículos registrados
             </Button>
