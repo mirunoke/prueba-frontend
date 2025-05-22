@@ -16,9 +16,8 @@ import { FaCar, FaRegUser } from "react-icons/fa";
 import { Divider } from "@heroui/react";
 import { CiBarcode, CiCalendar, CiShoppingTag } from "react-icons/ci";
 import { MdAbc } from "react-icons/md";
-import { FaScrewdriverWrench } from "react-icons/fa6";
 import { IoChatboxEllipsesOutline,IoCarSportOutline } from "react-icons/io5";
-import { LuPhone } from "react-icons/lu";
+import { LuPhone, LuWrench } from "react-icons/lu";
 
 enum VehicleBrand {
   NISSAN = "Nissan",
@@ -43,6 +42,22 @@ export default function AddVehicleForm() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+
+  const formatPhone = (digits: string) => {
+    if (!digits) return "";
+    const p1 = digits.slice(0, 2);
+    const p2 = digits.slice(2, 4);
+    const p3 = digits.slice(4, 6);
+    const p4 = digits.slice(6, 8);
+    const p5 = digits.slice(8, 10);
+    let formatted = "(" + p1;
+    if (digits.length >= 2) formatted += ")";
+    if (digits.length > 2) formatted += " " + p2;
+    if (digits.length > 4) formatted += " " + p3;
+    if (digits.length > 6) formatted += " " + p4;
+    if (digits.length > 8) formatted += " " + p5;
+    return formatted;
+  };
 
   React.useEffect(() => {
     const isValid = !!vin && !!clientName && !!brand && !!model && !!year &&
@@ -180,17 +195,27 @@ export default function AddVehicleForm() {
             <Input
               label="Teléfono del cliente"
               labelPlacement="outside"
-              placeholder="Ej: 5512345678"
-              value={clientPhone}
-              onChange={(e) => setClientPhone(e.target.value)}
+              placeholder="(55) 12 34 56 78"
+              value={formatPhone(clientPhone)}
+              onChange={(e) => {
+                const rawValue = e.target.value;
+                const digitsFromRaw = rawValue.replace(/\D/g, "");
+                const isDeleting = rawValue.length < formatPhone(clientPhone).length;
+                let nextDigits = digitsFromRaw;
+                if (isDeleting && digitsFromRaw === clientPhone) {
+                  nextDigits = clientPhone.slice(0, -1);
+                }
+
+                setClientPhone(nextDigits.slice(0, 10));
+              }}
               isRequired
               fullWidth
               variant="bordered"
               size="lg"
               description="10 dígitos"
-              pattern="^[0-9]*$"
               title="Sólo se permiten números"
-              startContent={<LuPhone/>}
+              startContent={<LuPhone />}
+              maxLength={16}
             />
           </div>
           <Divider />
@@ -202,13 +227,14 @@ export default function AddVehicleForm() {
               labelPlacement="outside"
               placeholder="Ej: 1HGCM82633A123456"
               value={vin}
-              onChange={(e) => setVin(e.target.value)}
+              onChange={(e) => setVin(e.target.value.toUpperCase())}
               isRequired
               fullWidth
               size="lg"
+              maxLength={17}
               startContent={<CiBarcode />}
               variant="bordered"
-              description="Número de identificación de 17 caracteres alfanuméricos"
+              description={`${vin.length}/17 caracteres`}
             />
 
             <div>
@@ -261,6 +287,8 @@ export default function AddVehicleForm() {
               isRequired
               fullWidth
               size="lg"
+              errorMessage="El año debe estar entre 1900 y un año posterior al actual"
+              isInvalid={year < 1900 || year > new Date().getFullYear() + 1}
               variant="bordered"
             />
 
@@ -290,7 +318,7 @@ export default function AddVehicleForm() {
               fullWidth
               variant="bordered"
               size="lg"
-              startContent={<FaScrewdriverWrench />}
+              startContent={<LuWrench/>}
             />
 
             <Input
