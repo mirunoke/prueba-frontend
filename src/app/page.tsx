@@ -34,20 +34,6 @@ export default function Home() {
             <li>Lleva un control eficiente del mantenimiento.</li>
           </ul>
         </div>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-5 md:mt-6"> 
-          <Link href="vehicles/add-vehicle">
-            <Button size="sm" color="primary" variant="ghost" className="w-full sm:w-auto font-md">
-              Ingresar nuevo vehículo
-            </Button>
-          </Link>
-
-          <Link href="/vehicles/list-vehicles">
-            <Button size="sm" color="primary" variant="ghost" className="w-full sm:w-auto font-md">
-              Ver vehículos registrados
-            </Button>
-          </Link>
-        </div>
       </div>
     </div>
   );
