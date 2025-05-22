@@ -9,6 +9,8 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { DotLottiePlayer } from '@dotlottie/react-player';
+
 
 interface SuccessModalProps {
   visible: boolean;
@@ -51,8 +53,17 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
             <ModalHeader className="flex flex-col gap-1 text-green-600">
               ¡Éxito!
             </ModalHeader>
+
             <ModalBody>
-              <p>{message}</p>
+              <div className="flex justify-center">
+                  <DotLottiePlayer 
+                    src="/lotties/success.lottie"
+                    autoplay
+                    loop={false}
+                    style={{ height: "200px", width: "200px" }}
+                  />
+                </div>
+              <p className="flex justify-center">{message}</p>
             </ModalBody>
             <ModalFooter>
               <Button
